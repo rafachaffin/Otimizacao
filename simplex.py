@@ -3,12 +3,13 @@ import numpy as np
 def getTableu(z, R, b):
     # Negativar z para o tableau
     z_row = -z
+
     # Adiciona b como última coluna de R
     R_ext = np.hstack([R, b.reshape(-1, 1)])
+    
     # Adiciona linha do z e valor 0 na última coluna
     last_row = np.append(z_row, 0)
     tableau = np.vstack([R_ext, last_row])
-
     return tableau
 
 def getRowPivot(tableau, col_pivot):
@@ -30,21 +31,28 @@ def getColumnPivot(tableau):
     return col_pivot
 
 def runSimplex(tableau):
+
     while True:
+
         col_pivot = getColumnPivot(tableau)
         if col_pivot == -1:
             break  # Ótimo encontrado
+
         row_pivot = getRowPivot(tableau, col_pivot)
         print(f"Coluna pivô: {col_pivot}, Linha pivô: {row_pivot}")
+
         # Pivoteamento
         pivot_element = tableau[row_pivot, col_pivot]
         tableau[row_pivot, :] = tableau[row_pivot, :] / pivot_element
+
         for i in range(tableau.shape[0]):
             if i != row_pivot:
                 tableau[i, :] = tableau[i, :] - tableau[i, col_pivot] * tableau[row_pivot, :]
+
         print("Tableau atualizado:")
         print(tableau)
-    # Solução ótima: última coluna, exceto última linha
+        
+    # Solução ótima: última linha, sem a última coluna
     solution = np.zeros(tableau.shape[1] - 1)
     for j in range(tableau.shape[1] - 1):
         col = tableau[:-1, j]
