@@ -21,7 +21,7 @@ def getRowPivot(tableau, col_pivot):
     # Retorna o índice da menor razão
     return np.argmin(ratios)
 
-def getColumnPivot(tableau: np.array) -> int:
+def getColumnPivot(tableau):
     # Pega a última linha, exceto a última coluna (que é o termo independente)
     last_row = tableau[-1, :-1]
     # Encontra o índice do valor mais negativo
