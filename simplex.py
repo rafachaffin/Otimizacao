@@ -1,6 +1,7 @@
 import numpy as np
+from typing import Tuple
 
-def getTableu(z, R, b):
+def getTableu(z: np.ndarray, R: np.ndarray, b: np.ndarray) -> np.ndarray:
     # Negativar z para o tableau
     z_row = -z
 
@@ -12,25 +13,25 @@ def getTableu(z, R, b):
     tableau = np.vstack([R_ext, last_row])
     return tableau
 
-def getRowPivot(tableau, col_pivot):
+def getRowPivot(tableau: np.ndarray, col_pivot: int) -> int:
     # Calcula a razão entre última coluna (b) e coluna pivô, apenas para valores positivos na coluna pivô
     b = tableau[:-1, -1]
     col = tableau[:-1, col_pivot]
     with np.errstate(divide='ignore', invalid='ignore'):
         ratios = np.where(col > 0, b / col, np.inf)
     # Retorna o índice da menor razão
-    return np.argmin(ratios)
+    return int(np.argmin(ratios))
 
-def getColumnPivot(tableau: np.array) -> int:
+def getColumnPivot(tableau: np.ndarray) -> int:
     # Pega a última linha, exceto a última coluna (que é o termo independente)
     last_row = tableau[-1, :-1]
     # Encontra o índice do valor mais negativo
-    col_pivot = np.argmin(last_row)
+    col_pivot = int(np.argmin(last_row))
     if last_row[col_pivot] >= 0:
         return -1  # Não há coluna pivô (ótimo)
     return col_pivot
 
-def runSimplex(tableau):
+def runSimplex(tableau: np.ndarray) -> Tuple[np.ndarray, int]:
 
     while True:
 
@@ -61,7 +62,7 @@ def runSimplex(tableau):
             solution[j] = tableau[row, -1]
     print("Solução ótima:", solution)
     print("Valor ótimo:", tableau[-1, -1])
-    return solution, tableau[-1, -1]
+    return (solution, tableau[-1, -1])
 
 def main():
     # Exemplo simples para teste
